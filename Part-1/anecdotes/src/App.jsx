@@ -1,8 +1,23 @@
 import { useState } from 'react'
 
-const Button = (props) => {
+const Button = ( {handleClick, text} ) => {
   return (
-    <button onClick={props.handleClick}>{props.text}</button>
+    <button onClick={handleClick}>{text}</button>
+  )
+}
+
+const Vote = ({ score }) => <p>This quote has: { score } votes</p>
+
+const Header = ({ text }) => <h1>{text}</h1>
+
+const TopAnecdote = ({ anecdotes, votes }) => {
+  const maxKey = Object.keys(votes).reduce((a, b) => votes[a] > votes[b] ? a : b);
+
+  if (votes[maxKey] === 0)
+    return <p>waiting on votes...</p>
+
+  return (
+    <p>{anecdotes[maxKey]} has the most votes with: {votes[maxKey]}</p>
   )
 }
 
@@ -17,6 +32,17 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  const [votes, setVotes] = useState({
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0
+  })
    
   const [selected, setSelected] = useState(0)
 
@@ -29,11 +55,21 @@ const App = () => {
     setSelected(index)
   }
 
+  const voteQuote = () => {
+    const copy = { ...votes }
+    copy[selected] += 1
+    setVotes(copy)
+  }
+
   return (
     <div>
+      <Header text="Anecdote of the day" />
       {anecdotes[selected]}
-      <br/>
+      <Vote score={votes[selected]} />
+      <Button handleClick={voteQuote} text="Vote" />
       <Button handleClick={changeQuote} text='Next Quote' />
+      <Header text="Anecdote with the most votes" />
+      <TopAnecdote anecdotes={anecdotes} votes={votes} />
     </div>
   )
 }
