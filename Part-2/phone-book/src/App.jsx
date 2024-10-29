@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react'
 import Phonebook from './components/Phonebook'
 import Filter from './components/Filter'
 import Contact from './components/Contact'
-import axios from 'axios'
+import contactServices from './services/server.js'
 
 const App = () => {
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
+  const phonebook = persons.filter(person => person.name?.includes(searchName))
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => {
-        console.log(response)
-      })
+    contactServices
+      .getAll()
+      .then((response) => setPersons(response))
   }, [])
 
   const changeName = (event) => {
@@ -32,26 +32,37 @@ const App = () => {
   const addContact = (event) => {
     event.preventDefault()
     const nameExists = persons.some(person => person.name === newName)
-localStorage
-    if (nameExists) {
-      alert(`${newName} already exists in the phonebook!`)
-    } else if (newName === '') {
+    
+    if ( newName === '' ) {
       alert(`Name cannot be blank!`)
+    } else if (nameExists) {
+      const contactMatch = persons.find(person => person.name === newName)
+      const changedContact = { ...contactMatch, number: newNumber }
+
+      contactServices
+        .update(changedContact.id, changedContact)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== changedContact.id ? person : response))
+          setNewName('')
+          setNewNumber('')
+          console.log(`Changed ${changedContact.name}'s contact number to ${changedContact.number}`)
+        })
+        .catch(error => {
+          console.log(`Update failed!`)
+        })
     } else {
-      setPersons([...persons, { name: newName, number: newNumber }])
-      setNewName('')
-      setNewNumber('')
+      const contact = { name: newName, number: newNumber }
+
+      contactServices
+        .create(contact)
+        .then(response => {
+          setPersons([...persons, response])
+          setNewName('')
+          setNewNumber('')
+          console.log(`Contact: "${response.name}" was added to the phonebook!`)
+        })
     }
   }
-
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
-
-  const phonebook = persons.filter(person => person.name.includes(searchName))
 
   return (
     <div>
@@ -62,7 +73,7 @@ localStorage
       newNumber={newNumber} changeNumber={changeNumber}
       addContact={addContact}
       />
-      <Phonebook persons={phonebook} />
+      <Phonebook persons={phonebook} setPersons={setPersons} />
     </div>
   )
 }
