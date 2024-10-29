@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Phonebook from './components/Phonebook'
 import Filter from './components/Filter'
 import Contact from './components/Contact'
+import axios from 'axios'
 
 const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then((response) => {
+        console.log(response)
+      })
+  }, [])
 
   const changeName = (event) => {
     setNewName(event.target.value)
@@ -23,10 +32,10 @@ const App = () => {
   const addContact = (event) => {
     event.preventDefault()
     const nameExists = persons.some(person => person.name === newName)
-
+localStorage
     if (nameExists) {
       alert(`${newName} already exists in the phonebook!`)
-    } if (newName === '') {
+    } else if (newName === '') {
       alert(`Name cannot be blank!`)
     } else {
       setPersons([...persons, { name: newName, number: newNumber }])
