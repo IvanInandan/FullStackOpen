@@ -64,8 +64,8 @@ const App = () => {
             setTimeout(() => {
               setSuccess(null)
               setMessage(null)
-            }, 5000)            
-        })
+            }, 5000)
+          })
       }
     } else { // If name does not exist, add phone number
       const contact = { name: newName, number: newNumber }
@@ -98,25 +98,25 @@ const App = () => {
 
   const removeContact = (id) => {
     if (window.confirm('Are you sure you want to remove contact from phonebook?')) {
-        contactServices
-            .remove(id)
-            .then(response => {
-                setPersons(persons.filter(person => person.id !== id))
-                setSuccess(true)
-                setMessage(`Contact with ID ${id} has been removed successfully`)
-                setTimeout(() => {
-                    setSuccess(null)
-                    setMessage(null)
-                }, 5000)
-            })
-            .catch(error => {
-                setSuccess(false)
-                setMessage(`ERROR: Contact ${id} has does not exist in the server`)
-                setTimeout(() => {
-                    setSuccess(null)
-                    setMessage(null)
-                }, 5000)
-            })
+      contactServices
+        .remove(id)
+        .then(response => {
+          setPersons(persons.filter(person => person.id !== id))
+          setSuccess(true)
+          setMessage(`Contact with ID ${id} has been removed successfully`)
+          setTimeout(() => {
+            setSuccess(null)
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setSuccess(false)
+          setMessage(`ERROR: Contact ${id} has does not exist in the server`)
+          setTimeout(() => {
+            setSuccess(null)
+            setMessage(null)
+          }, 5000)
+        })
     }
   }
 
@@ -130,9 +130,9 @@ const App = () => {
         newNumber={newNumber} changeNumber={changeNumber}
         addContact={addContact}
       />
-      <Phonebook 
-        persons={phonebook} 
-        removeContact={removeContact} 
+      <Phonebook
+        persons={phonebook}
+        removeContact={removeContact}
       />
     </div>
   )
