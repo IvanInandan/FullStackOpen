@@ -6,6 +6,8 @@ import Countries from './components/Countries'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [searchCountry, setSearchCountry] = useState('')
+  const [lat, setLat] = useState('')
+  const [lon, setLon] = useState('')
 
   useEffect(() => {
     countryService 
@@ -24,12 +26,16 @@ const App = () => {
   const changeSearch = (event) => {
     setSearchCountry(event.target.value)
   }
-  
+
+  const showCountry = (name) => {
+    setSearchCountry(name)
+  }
+
   return (
     <div>
       <Filter searchCountry={searchCountry} changeSearch={changeSearch} />
       <h1>Countries</h1>
-      <Countries countries={displayedCountries} />
+      <Countries countries={displayedCountries} showCountry={showCountry} />
     </div>
   )
 }

@@ -1,4 +1,14 @@
-const Countries = ({ countries }) => {
+import Weather from './Weather'
+import weatherServices from '../services/server.js'
+import { useState } from 'react'
+
+const Countries = ({ countries, showCountry }) => {
+    const [weather, setWeather] = useState('')
+    const [main, setMain] = useState('')
+    const [wind, setWind] = useState('')
+    const [lat, setLat] = useState('')
+    const [lon, setLon] = useState('')
+
     if (countries.length > 10) { // If search > 10
         return (
             <div>
@@ -8,9 +18,14 @@ const Countries = ({ countries }) => {
     } else if (countries.length > 1 && countries.length <= 10) { // If search 2-10
         return (
             <div>
-                {countries.map((country, index) => {
+                {countries.map((country) => {
                     return (
-                        <p key={index}>{country.name.common}</p>
+                        <div key={country.cca2}>
+                            <p>
+                                {country.name.common}
+                                <button onClick={() => showCountry(country.name.common)}>show</button>
+                            </p>
+                        </div>
                     )
                 })}
             </div>
@@ -18,6 +33,22 @@ const Countries = ({ countries }) => {
     } else if (countries.length === 1) { // If single country is found
         const country = countries[0]
         const languages = Object.values(country.languages)
+        const capital = country.capital[0]
+
+        weatherServices
+            .getCoords(capital)
+            .then((response) => {
+                setLat(response[0].lat)
+                setLon(response[0].lon)
+
+                weatherServices
+                    .getWeather(lat, lon)
+                    .then((response) => {
+                        setWeather(response.weather)
+                        setWind(response.wind)
+                        setMain(response.main)
+                    })
+            })
 
         return (
             <div>
@@ -32,7 +63,9 @@ const Countries = ({ countries }) => {
                         )
                     })}
                 </ul>
-                <img src={country.flags.png}/>
+                <img src={country.flags.png} />
+                <h4>Weather in {country.capital}</h4>
+                <Weather weather={weather} main={main} wind={wind} />
             </div>
         )
     } else {
