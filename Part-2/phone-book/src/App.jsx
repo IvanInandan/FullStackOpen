@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Phonebook from './components/Phonebook'
 import Filter from './components/Filter'
 import Contact from './components/Contact'
+import Notification from './components/Notification'
 import contactServices from './services/server.js'
 
 const App = () => {
@@ -10,6 +11,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
   const phonebook = persons.filter(person => person.name?.includes(searchName))
+  const [message, setMessage] = useState(null)
+  const [success, setSuccess] = useState()
 
   useEffect(() => {
     contactServices
@@ -33,9 +36,9 @@ const App = () => {
     event.preventDefault()
     const nameExists = persons.some(person => person.name === newName)
 
-    if (newName === '') {
+    if (newName === '') { // Blank Name
       alert(`Name cannot be blank!`)
-    } else if (nameExists) {
+    } else if (nameExists) { // If name exist in phone, update phone number
       if (window.confirm(`${newName} already exists in the phonebook. Do you want to edit their number?`)) {
         const contactMatch = persons.find(person => person.name === newName)
         const changedContact = { ...contactMatch, number: newNumber }
@@ -46,13 +49,25 @@ const App = () => {
             setPersons(persons.map(person => person.id !== changedContact.id ? person : response))
             setNewName('')
             setNewNumber('')
-            console.log(`Changed ${changedContact.name}'s contact number to ${changedContact.number}`)
+
+            // Handle notification message 
+            setSuccess(true)
+            setMessage(`Number for '${response.name}' has been changed to ${response.number}`)
+            setTimeout(() => { // After five seconds, erase error message
+              setSuccess(null)
+              setMessage(null)
+            }, 5000)
           })
           .catch(error => {
-            console.log(`Update failed!`)
-          })
+            setSuccess(false)
+            setMessage(`ERROR: ${contactMatch.name} does not exist in the server. Please refresh page`)
+            setTimeout(() => {
+              setSuccess(null)
+              setMessage(null)
+            }, 5000)            
+        })
       }
-    } else {
+    } else { // If name does not exist, add phone number
       const contact = { name: newName, number: newNumber }
 
       contactServices
@@ -61,21 +76,64 @@ const App = () => {
           setPersons([...persons, response])
           setNewName('')
           setNewNumber('')
-          console.log(`Contact: "${response.name}" was added to the phonebook!`)
+
+          // Handle notification message
+          setSuccess(true)
+          setMessage(`Contact: "${response.name}" was added to the phonebook!`)
+          setTimeout(() => { // After five seconds, erase error message
+            setSuccess(null)
+            setMessage(null)
+          }, 5000)
         })
+        .catch(error => {
+          setSuccess(false)
+          setMessage(`ERROR: Problem adding ${contact.name} to server`)
+          setTimeout(() => {
+            setSuccess(null)
+            setMessage(null)
+          }, 5000)
+        })
+    }
+  }
+
+  const removeContact = (id) => {
+    if (window.confirm('Are you sure you want to remove contact from phonebook?')) {
+        contactServices
+            .remove(id)
+            .then(response => {
+                setPersons(persons.filter(person => person.id !== id))
+                setSuccess(true)
+                setMessage(`Contact with ID ${id} has been removed successfully`)
+                setTimeout(() => {
+                    setSuccess(null)
+                    setMessage(null)
+                }, 5000)
+            })
+            .catch(error => {
+                setSuccess(false)
+                setMessage(`ERROR: Contact ${id} has does not exist in the server`)
+                setTimeout(() => {
+                    setSuccess(null)
+                    setMessage(null)
+                }, 5000)
+            })
     }
   }
 
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} success={success} />
       <Filter searchName={searchName} changeSearch={changeSearch} />
       <Contact
         newName={newName} changeName={changeName}
         newNumber={newNumber} changeNumber={changeNumber}
         addContact={addContact}
       />
-      <Phonebook persons={phonebook} setPersons={setPersons} />
+      <Phonebook 
+        persons={phonebook} 
+        removeContact={removeContact} 
+      />
     </div>
   )
 }

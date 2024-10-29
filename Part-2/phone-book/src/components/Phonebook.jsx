@@ -1,20 +1,4 @@
-import contactServices from '../services/server'
-
-const Phonebook = ({ persons, setPersons }) => {
-    const removeContact = (id) => {
-        if (window.confirm('Are you sure you want to remove contact from phonebook?')) {
-            contactServices
-                .remove(id)
-                .then(response => {
-                    setPersons(persons.filter(person => person.id !== id))
-                    console.log(`Contact with ID ${id} removed successfully`)
-                })
-                .catch(error => {
-                    console.log(`Error removing contact:`, error)
-                })
-        }
-    }
-
+const Phonebook = ({ persons, removeContact }) => {
     return (
         <div>
             <h2>Numbers</h2>
