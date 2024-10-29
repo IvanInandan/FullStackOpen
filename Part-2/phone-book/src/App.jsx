@@ -32,24 +32,26 @@ const App = () => {
   const addContact = (event) => {
     event.preventDefault()
     const nameExists = persons.some(person => person.name === newName)
-    
-    if ( newName === '' ) {
+
+    if (newName === '') {
       alert(`Name cannot be blank!`)
     } else if (nameExists) {
-      const contactMatch = persons.find(person => person.name === newName)
-      const changedContact = { ...contactMatch, number: newNumber }
+      if (window.confirm(`${newName} already exists in the phonebook. Do you want to edit their number?`)) {
+        const contactMatch = persons.find(person => person.name === newName)
+        const changedContact = { ...contactMatch, number: newNumber }
 
-      contactServices
-        .update(changedContact.id, changedContact)
-        .then(response => {
-          setPersons(persons.map(person => person.id !== changedContact.id ? person : response))
-          setNewName('')
-          setNewNumber('')
-          console.log(`Changed ${changedContact.name}'s contact number to ${changedContact.number}`)
-        })
-        .catch(error => {
-          console.log(`Update failed!`)
-        })
+        contactServices
+          .update(changedContact.id, changedContact)
+          .then(response => {
+            setPersons(persons.map(person => person.id !== changedContact.id ? person : response))
+            setNewName('')
+            setNewNumber('')
+            console.log(`Changed ${changedContact.name}'s contact number to ${changedContact.number}`)
+          })
+          .catch(error => {
+            console.log(`Update failed!`)
+          })
+      }
     } else {
       const contact = { name: newName, number: newNumber }
 
@@ -68,10 +70,10 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <Filter searchName={searchName} changeSearch={changeSearch} />
-      <Contact 
-      newName={newName} changeName={changeName}
-      newNumber={newNumber} changeNumber={changeNumber}
-      addContact={addContact}
+      <Contact
+        newName={newName} changeName={changeName}
+        newNumber={newNumber} changeNumber={changeNumber}
+        addContact={addContact}
       />
       <Phonebook persons={phonebook} setPersons={setPersons} />
     </div>

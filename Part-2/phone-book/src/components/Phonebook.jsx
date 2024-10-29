@@ -2,15 +2,17 @@ import contactServices from '../services/server'
 
 const Phonebook = ({ persons, setPersons }) => {
     const removeContact = (id) => {
-        contactServices
-            .remove(id)
-            .then(response => {
-                setPersons(persons.filter(person => person.id !== id))
-                console.log(`Contact with ID ${id} removed successfully`)
-            })
-            .catch(error => {
-                console.log(`Error removing contact:`, error)
-            })
+        if (window.confirm('Are you sure you want to remove contact from phonebook?')) {
+            contactServices
+                .remove(id)
+                .then(response => {
+                    setPersons(persons.filter(person => person.id !== id))
+                    console.log(`Contact with ID ${id} removed successfully`)
+                })
+                .catch(error => {
+                    console.log(`Error removing contact:`, error)
+                })
+        }
     }
 
     return (
@@ -24,7 +26,7 @@ const Phonebook = ({ persons, setPersons }) => {
                     </p>
                 )
             }
-        )}
+            )}
         </div>
     )
 }
