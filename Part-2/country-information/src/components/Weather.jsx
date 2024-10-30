@@ -1,7 +1,7 @@
 import weatherServices from '../services/server.js'
 
 const Weather = ({ weather, main, wind }) => {
-    /*
+    
     const windSpeed = wind.speed
     const temp = main.temp - 273.15
     const icon = weather[0].icon
@@ -15,7 +15,7 @@ const Weather = ({ weather, main, wind }) => {
             <img src={iconUrl} />
         </div>
     )
-    */
+    
 }
 
 export default Weather

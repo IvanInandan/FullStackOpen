@@ -1,13 +1,37 @@
 import Weather from './Weather'
 import weatherServices from '../services/server.js'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Countries = ({ countries, showCountry }) => {
     const [weather, setWeather] = useState('')
     const [main, setMain] = useState('')
     const [wind, setWind] = useState('')
-    const [lat, setLat] = useState('')
-    const [lon, setLon] = useState('')
+    const [capital, setCapital] = useState('')
+
+    useEffect(() => {
+        if (countries.length === 1) {
+            const country = countries[0]
+            const capitalCity = country.capital[0]
+            setCapital(capitalCity)
+
+            weatherServices
+                .getCoords(capitalCity)
+                .then((response) => {
+                    const lat = response[0].lat
+                    const lon = response[0].lon
+
+                    return weatherServices.getWeather(lat, lon)
+                })
+                .then((repsonse) => {
+                    setWeather(response.weather)
+                    setWind(response.wind)
+                    setMain(response.main)
+                })
+                .catch((error) => {
+                    console.log(`Error fetching weather data: `, error)
+                })
+        }
+    }, [countries])
 
     if (countries.length > 10) { // If search > 10
         return (
@@ -33,22 +57,6 @@ const Countries = ({ countries, showCountry }) => {
     } else if (countries.length === 1) { // If single country is found
         const country = countries[0]
         const languages = Object.values(country.languages)
-        const capital = country.capital[0]
-
-        weatherServices
-            .getCoords(capital)
-            .then((response) => {
-                setLat(response[0].lat)
-                setLon(response[0].lon)
-
-                weatherServices
-                    .getWeather(lat, lon)
-                    .then((response) => {
-                        setWeather(response.weather)
-                        setWind(response.wind)
-                        setMain(response.main)
-                    })
-            })
 
         return (
             <div>
@@ -65,7 +73,11 @@ const Countries = ({ countries, showCountry }) => {
                 </ul>
                 <img src={country.flags.png} />
                 <h4>Weather in {country.capital}</h4>
-                <Weather weather={weather} main={main} wind={wind} />
+                { weather && main && wind ? (
+                    <Weather weather={weather} main={main} wind={wind} />
+                ) : (
+                    <p>Loading weather data...</p>
+                )}
             </div>
         )
     } else {

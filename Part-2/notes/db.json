@@ -8,7 +8,7 @@
     {
       "id": "2",
       "content": "Browser can execute only JavaScript",
-      "important": true
+      "important": false
     },
     {
       "id": "3",
@@ -22,7 +22,7 @@
     },
     {
       "content": "123",
-      "important": true,
+      "important": false,
       "id": "49a3"
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "content": "123",
-      "important": true,
+      "important": false,
       "id": "3250"
     },
     {
@@ -53,7 +53,7 @@
     {
       "id": "827a",
       "content": "123",
-      "important": true
+      "important": false
     },
     {
       "id": "073b",
@@ -73,6 +73,26 @@
     {
       "id": "7f8a",
       "content": "",
+      "important": false
+    },
+    {
+      "id": "8942",
+      "content": "Hello!",
+      "important": false
+    },
+    {
+      "id": "1e3d",
+      "content": "Regardless",
+      "important": false
+    },
+    {
+      "id": "e130",
+      "content": "Clean the bed",
+      "important": true
+    },
+    {
+      "id": "9ea8",
+      "content": "Wash the dishes",
       "important": true
     }
   ]
