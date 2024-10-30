@@ -1,6 +1,13 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+
+morgan.token('data', (req, res) => {
+    return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] :response-time ms :data'))
 
 let phonebook = [
     {
@@ -56,12 +63,20 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.delete('/api/persons/:number', (req, res) => {
     const number = req.params.number
-    phonebook = phonebook.filter(person => person.number != number)
+    const found = phonebook.find(person => person.number === number)
+
+    if (found) {
+        phonebook = phonebook.filter(person => person.number != number)
+        return res.status(204).end();
+    } else {
+        return res.status(400).json({
+            error: 'Number not found in phonebook'
+        })
+    }
 })
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
-    console.log(body)
 
     if (!body.number || !body.name) {
         return res.status(400).json({
