@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for notes-bitter-paper-1601 on 2024-10-31T11:49:51-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'notes-bitter-paper-1601'
+primary_region = 'lax'
+
+[build]
+
+[env]
+  PORT = "5173"
+
+[http_service]
+  internal_port = 5173
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
