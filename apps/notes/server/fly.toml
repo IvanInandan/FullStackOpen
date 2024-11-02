@@ -9,10 +9,11 @@ primary_region = 'lax'
 [build]
 
 [env]
-  PORT = '3000'
+  PORT = '8080'
+  MONGODB_URI = 'mongodb+srv://iinandan97:b9Hjref217909y!@notes.oq2i5.mongodb.net/notesApp?retryWrites=true&w=majority&appName=notes'
 
 [http_service]
-  internal_port = 3000
+  internal_port = 8080
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true

@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const People = require('./models/phonebook.js')
 const app = express()
 app.use(express.json())
 app.use(cors())
@@ -12,70 +14,50 @@ morgan.token('data', (req, res) => {
 
 app.use(morgan(':method :url :status :res[content-length] :response-time ms :data'))
 
-let phonebook = [
-    {
-        id: "1",
-        name: "Arto Hellas",
-        number: "040-123456"
-    },
-    {
-        id: "2",
-        name: "Ada Lovelace",
-        number: "39-44-532353"
-    },
-    {
-        id: "3",
-        name: "Dan Abramov",
-        number: "12-34-234345"
-    },
-    {
-        id: "4",
-        name: "Mary Poppendiek",
-        number: "39-23-6423122"
-    }
-]
-
+/*
 const generateId = () => {
     const randomId = Math.floor(Math.random() * 1000000).toString()
     return randomId
 }
+*/
 
 app.get('/api/persons', (req, res) => {
-    res.json(phonebook)
+    People.find({}).then(person => {
+        console.log(person)
+        res.json(person)
+    })
 })
 
-app.get('/api/info', (req, res) => {
-    const currentDate = new Date().toLocaleString();
+app.get('/api/info', (req, res, next) => {
+    const currentDate = new Date().toLocaleString()
 
-    res.send(`
-        <p>Phonebook has info for ${phonebook.length} people</p>
-        <p>${currentDate}</p>
-    `)
-})
-
-app.get('/api/persons/:id', (req, res) => {
-    const id = req.params.id
-    const found = phonebook.find(n => n.id === id)
-
-    if (!found) {
-        res.status(404).end()
-    } else {
-        res.json(found)
-    }
-})
-
-app.delete('/api/persons/:id', (req, res) => {
-    const id = req.params.id
-    const found = phonebook.find(person => person.id === id)
-
-    if (found) {
-        phonebook = phonebook.filter(person => person.id != id)
-        return res.status(204).end();
-    } else {
-        return res.status(400).json({
-            error: 'ID not found in phonebook'
+    People
+        .collection.countDocuments()
+        .then(count => {
+            res.send(`
+                <p>Phonebook has info for ${count} people</p>
+                <p>${currentDate}</p>
+            `)
         })
-    }
+        .catch(error => next(error))
+})
+
+app.get('/api/persons/:id', (req, res, next) => {
+    People.findById(req.params.id).then(result => {
+        res.json(result)
+    })
+    .catch(error => next(error))
+})
+
+app.delete('/api/persons/:id', (req, res, next) => {
+    People.findByIdAndDelete(req.params.id).then(result => {
+        if (result) {
+            res.status(204).end()
+        } else {
+            res.status(400).send({ error: 'id not found' })
+        }
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/persons', (req, res) => {
@@ -85,40 +67,34 @@ app.post('/api/persons', (req, res) => {
         return res.status(400).json({
             error: 'Content is missing'
         })
-    } else if (phonebook.find(person => person.name === body.name)) {
-        return res.status(400).json({
-            error: 'Name already exists in phonebook'
-        })
     }
 
-    const person = {
+    const person = new People({
         name: body.name,
-        number: body.number,
-        id: generateId()
-    }
+        number: body.number
+    })
 
-    phonebook = phonebook.concat(person)
-    res.json(person)
-})
-
-app.put('/api/persons/:id', (req, res) => {
-    const id = req.params.id
-    const data = req.body
-    const found = phonebook.find(person => person.id === id)
-
-    if (!found) {
-        return res.status(400).json({
-            error: 'ID not found in phonebook'
-        })
-    }
-
-    phonebook = phonebook.map(person => person.id !== id ? person : data)
-    res.status(200).json({
-        message: `Number for ${data.name} has been changed to ${data.number}`
+    person.save().then(response => {
+        res.json(response)
     })
 })
 
-const PORT = process.env.PORT || 3001
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    People
+        .findByIdAndUpdate(req.params.id, person, { new: true })
+        .then(result => {
+            res.json(result)
+        })
+        .catch(error => next(error))
+})
+
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
