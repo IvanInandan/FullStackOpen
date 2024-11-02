@@ -84,7 +84,6 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          console.log('failed to add')
           setSuccess(false)
           setMessage(`ERROR: Problem adding ${contact.name} to server`)
           setTimeout(() => {

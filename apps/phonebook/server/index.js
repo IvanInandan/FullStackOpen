@@ -16,7 +16,6 @@ app.use(morgan(':method :url :status :res[content-length] :response-time ms :dat
 
 app.get('/api/persons', (req, res) => {
     People.find({}).then(person => {
-        console.log(person)
         res.json(person)
     })
 })
@@ -61,6 +60,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 app.post('/api/persons', (req, res, next) => {
     const body = req.body
+    console.log(body)
 
     const person = new People({
         name: body.name,
@@ -69,7 +69,7 @@ app.post('/api/persons', (req, res, next) => {
 
     person
         .save()
-        .then(repsonse => {
+        .then(response => {
             res.json(response)
         })
         .catch(error => next(error))
@@ -93,7 +93,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 app.use((err, req, res, next) => {
     if (err.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted ID' })
-    } else if (err.name === 'ValidationError') {
+    } else if (err.name === 'ValidationError') { 
         return res.status(400).send(err.message)
     }
 });
