@@ -14,13 +14,6 @@ morgan.token('data', (req, res) => {
 
 app.use(morgan(':method :url :status :res[content-length] :response-time ms :data'))
 
-/*
-const generateId = () => {
-    const randomId = Math.floor(Math.random() * 1000000).toString()
-    return randomId
-}
-*/
-
 app.get('/api/persons', (req, res) => {
     People.find({}).then(person => {
         console.log(person)
@@ -43,10 +36,16 @@ app.get('/api/info', (req, res, next) => {
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
-    People.findById(req.params.id).then(result => {
-        res.json(result)
-    })
-    .catch(error => next(error))
+    People
+        .findById(req.params.id)
+        .then(found => {
+            if (!found) {
+                res.status(404).json({ error: 'id not found' })
+            } else {
+                res.json(found)
+            }
+        })
+        .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
@@ -60,23 +59,20 @@ app.delete('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
-
-    if (!body.number || !body.name) {
-        return res.status(400).json({
-            error: 'Content is missing'
-        })
-    }
 
     const person = new People({
         name: body.name,
         number: body.number
     })
 
-    person.save().then(response => {
-        res.json(response)
-    })
+    person
+        .save()
+        .then(repsonse => {
+            res.json(response)
+        })
+        .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -93,6 +89,14 @@ app.put('/api/persons/:id', (req, res, next) => {
         })
         .catch(error => next(error))
 })
+
+app.use((err, req, res, next) => {
+    if (err.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted ID' })
+    } else if (err.name === 'ValidationError') {
+        return res.status(400).send(err.message)
+    }
+});
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {

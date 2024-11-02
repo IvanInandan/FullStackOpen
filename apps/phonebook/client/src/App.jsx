@@ -36,9 +36,7 @@ const App = () => {
     event.preventDefault()
     const nameExists = persons.some(person => person.name === newName)
 
-    if (newName === '') { // Blank Name
-      alert(`Name cannot be blank!`)
-    } else if (nameExists) { // If name exist in phone, update phone number
+    if (nameExists) { // If name exist in phone, update phone number
       if (window.confirm(`${newName} already exists in the phonebook. Do you want to edit their number?`)) {
         const contactMatch = persons.find(person => person.name === newName)
         const changedContact = { ...contactMatch, number: newNumber }
