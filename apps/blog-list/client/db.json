@@ -1,0 +1,16 @@
+{
+  "blogs": [
+    {
+      "title": "Hello world!",
+      "author": "Ivan Inandan",
+      "url": "blogs.com/ivaninandan",
+      "likes": 4
+    },
+    {
+      "title": "Best blogs",
+      "author": "Learose Miranda",
+      "url": "blogs.com/learosemiranda",
+      "likes": 3
+    }
+  ]
+}
