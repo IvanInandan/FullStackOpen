@@ -2,7 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "author": "Ivan Inandan",
+    "title": "This blog sucks!",
+    "author": "Learose Miranda",
     "url": "bestblogs.com",
-    "likes": 5 
+    "likes": 7
 }
