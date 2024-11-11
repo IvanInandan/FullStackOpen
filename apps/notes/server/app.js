@@ -7,17 +7,17 @@ const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
 
+const url = config.MONGODB_URI;
+console.log("App.js -- connecting to", url);
+
 mongoose.set("strictQuery", false);
-
-logger.info("connecting to", config.MONGODB_URI);
-
 mongoose
-  .connect(config.MONGODB_URI)
-  .then(() => {
-    logger.info("connected to MongoDB");
+  .connect(url)
+  .then((result) => {
+    console.log("App.js -- connected to mongoDB");
   })
   .catch((error) => {
-    logger.error("error connection to MongoDB:", error.message);
+    console.log("App.js -- error connecting to mongoDB", error);
   });
 
 app.use(cors());
