@@ -1,4 +1,5 @@
 const { info, error } = require("./logger");
+const _ = require("lodash");
 
 const dummy = (blogs) => {
   return 1;
@@ -40,8 +41,34 @@ const favoriteBlog = (blogs) => {
   }
 };
 
+const mostBlogs = (blogs) => {
+  const count = _.countBy(blogs, "author");
+  const highestAuthor = _.maxBy(Object.entries(count), ([, value]) => value);
+
+  return {
+    Author: highestAuthor[0],
+    Blogs: highestAuthor[1],
+  };
+};
+
+const mostLikes = (blogs) => {
+  const groupedBy = _.groupBy(blogs, "author");
+  const authorLikes = _.map(groupedBy, (blogs, author) => ({
+    author,
+    totalLikes: _.sumBy(blogs, "likes"),
+  }));
+  const mostAuthorLikes = _.maxBy(authorLikes, "totalLikes");
+
+  return {
+    Author: mostAuthorLikes.author,
+    Likes: mostAuthorLikes.totalLikes,
+  };
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
+  mostLikes,
 };
