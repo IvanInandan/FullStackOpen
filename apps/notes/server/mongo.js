@@ -10,7 +10,6 @@ const password = process.argv[2];
 const url = `mongodb+srv://iinandan97:${password}@notes.oq2i5.mongodb.net/test?retryWrites=true&w=majority&appName=notes`;
 
 mongoose.set("strictQuery", false);
-
 mongoose
   .connect(url)
   .then((result) => {
