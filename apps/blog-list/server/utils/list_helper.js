@@ -1,6 +1,27 @@
 const { info, error } = require("./logger");
 const _ = require("lodash");
 
+const initialBlogs = [
+  {
+    title: "This blog sucks!",
+    author: "Learose Miranda",
+    url: "bestblogs.com",
+    likes: 3,
+  },
+  {
+    title: "I write the best blogs.",
+    author: "Ivan Inandan",
+    url: "theworstblogs.org",
+    likes: 6,
+  },
+  {
+    title: "Okay guys, whatever. Let's get this thing going",
+    author: "Alec Panatonni",
+    url: "blogblog.blogs",
+    likes: 1,
+  },
+];
+
 const dummy = (blogs) => {
   return 1;
 };
@@ -66,6 +87,7 @@ const mostLikes = (blogs) => {
 };
 
 module.exports = {
+  initialBlogs,
   dummy,
   totalLikes,
   favoriteBlog,
