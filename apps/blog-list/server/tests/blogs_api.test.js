@@ -92,6 +92,36 @@ test("If a blog is passed without likes default value to 0", async () => {
   assert.strictEqual(response.body.likes, 0);
 });
 
+test("Delete first blog from the database", async () => {
+  const blogs = (await api.get("/api/blogs")).body;
+  const firstBlog = blogs[0];
+
+  const deletedBlog = await api
+    .delete(`/api/blogs/${firstBlog.id}`)
+    .expect(201);
+
+  const newBlogList = await api.get("/api/blogs");
+
+  assert.deepStrictEqual(deletedBlog.body, firstBlog);
+  assert.deepStrictEqual(newBlogList.body.length, blogs.length - 1);
+});
+
+test("Edit likes of the first blog", async () => {
+  const blogs = (await api.get("/api/blogs")).body;
+  console.log("Before: ", blogs);
+  const firstBlog = { ...blogs[0], likes: 1 };
+  console.log("firstBlog: ", firstBlog);
+
+  const response = await api
+    .put(`/api/blogs/${firstBlog.id}`)
+    .send(firstBlog)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const updatedBlogs = (await api.get("/api/blogs")).body;
+  console.log("After: ", updatedBlogs);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
