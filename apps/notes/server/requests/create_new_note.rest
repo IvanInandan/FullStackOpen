@@ -1,5 +1,6 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlpbmFuZGFuIiwiaWQiOiI2NzU0OTY4MDY0YzBkY2VlZTQ4NmVjMmIiLCJpYXQiOjE3MzM1OTg3NjEsImV4cCI6MTczMzYwMjM2MX0.5coI0QDLRa86x4cdpKNg7Eq6bYoGXQzmHRbhwMG3JeU
 
 {
     "content": "sick notes brother"
