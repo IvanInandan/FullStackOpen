@@ -18,7 +18,10 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
   } else if (err.name === "ValidationError") {
+    console.log(err.message);
     return res.status(400).send({ error: err.message });
+  } else if (err.message.includes("duplicate key error")) {
+    return res.status(400).send({ error: "expected `username` to be unique" });
   }
 
   next(error);
