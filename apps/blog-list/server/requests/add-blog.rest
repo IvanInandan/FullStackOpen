@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "This blog sucks!",
-    "author": "Learose Miranda",
-    "url": "bestblogs.com",
-    "likes": 7
+    "title": "WORST BLOG EVER",
+    "author": "worst author ever",
+    "url": "worst blogs ever",
+    "userId": "675b3a868064c30fd58ae05e",
+    "likes": 1
 }
