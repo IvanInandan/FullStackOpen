@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJsb2djcmVhdG9yIiwiaWQiOiI2NzY5ZDU0NDhhN2ZmZDBlY2I5ZmMxZjAiLCJpYXQiOjE3MzQ5ODkxMzZ9.kmEEf9kC6VktfjuF2x7F5tNvYGBRBg1zGNtruApt9-E
 
 {
-    "title": "You better not delete this one",
+    "title": "Don't touch this one either...",
     "author": "Blog Creator",
     "url": "permanentblog.org",
     "likes": 97

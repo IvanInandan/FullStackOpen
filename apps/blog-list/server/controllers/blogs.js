@@ -1,4 +1,5 @@
 const blogRouter = require("express").Router();
+const middleware = require("../utils/middleware");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
@@ -15,64 +16,65 @@ blogRouter.get("/", async (request, response, next) => {
   }
 });
 
-blogRouter.post("/", async (request, response, next) => {
-  try {
-    const body = request.body;
+blogRouter.post(
+  "/",
+  middleware.userExtractor, //middleware only applied on this route
+  async (request, response, next) => {
+    try {
+      const body = request.body;
+      const tokenUser = request.user;
 
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+      const user = await User.findById(tokenUser.id);
 
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: "token invalid" });
-    }
-
-    const userID = decodedToken.id;
-
-    const user = await User.findById(userID);
-
-    const blog = new Blog({
-      title: body.title,
-      author: body.author,
-      url: body.url,
-      user: userID,
-      likes: body.likes,
-    });
-
-    const newBlog = await blog.save();
-    user.blogs = user.blogs.concat(newBlog._id);
-    await user.save();
-    response.status(201).json(newBlog);
-  } catch (error) {
-    next(error);
-  }
-});
-
-blogRouter.delete("/:id", async (request, response, next) => {
-  try {
-    const result = await Blog.findById(request.params.id);
-    const userID = result.user.toString();
-
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
-
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: "token invalid" });
-    }
-
-    const tokenUserID = decodedToken.id;
-
-    if (userID !== tokenUserID) {
-      response.status(401).send({
-        error: "Authorization Error: Token ID does not match blog creator.",
+      const blog = new Blog({
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        user: tokenUser.id,
+        likes: body.likes,
       });
-      return;
-    }
 
-    const deletion = await Blog.findByIdAndDelete(request.params.id);
-    response.status(201).send(deletion);
-    return;
-  } catch (error) {
-    next(error);
+      const newBlog = await blog.save();
+      user.blogs = user.blogs.concat(newBlog._id);
+      await user.save();
+      response.status(201).json(newBlog);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
+
+blogRouter.delete(
+  "/:id",
+  middleware.userExtractor, //middleware only applied on this route
+  async (request, response, next) => {
+    try {
+      const result = await Blog.findById(request.params.id);
+      const userID = result.user.toString();
+
+      const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+      if (!decodedToken.id) {
+        return response.status(401).json({ error: "token invalid" });
+      }
+
+      const tokenUserID = decodedToken.id;
+
+      if (userID !== tokenUserID) {
+        response.status(401).send({
+          error: "Authorization Error: Token ID does not match blog creator.",
+        });
+        return;
+      }
+
+      const deletion = await Blog.findByIdAndDelete(request.params.id);
+      response.status(201).send(deletion);
+      return;
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 blogRouter.put("/:id", async (request, response, next) => {
   try {
