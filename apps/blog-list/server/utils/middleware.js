@@ -30,8 +30,6 @@ const errorHandler = (err, req, res, next) => {
 };
 
 const tokenExtractor = (req, res, next) => {
-  console.log("Entered token extractor!!!");
-
   const authorization = req.get("authorization");
 
   if (authorization && authorization.startsWith("Bearer ")) {

@@ -48,8 +48,27 @@ blogRouter.post("/", async (request, response, next) => {
 
 blogRouter.delete("/:id", async (request, response, next) => {
   try {
-    const result = await Blog.findByIdAndDelete(request.params.id);
-    response.status(201).send(result);
+    const result = await Blog.findById(request.params.id);
+    const userID = result.user.toString();
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: "token invalid" });
+    }
+
+    const tokenUserID = decodedToken.id;
+
+    if (userID !== tokenUserID) {
+      response.status(401).send({
+        error: "Authorization Error: Token ID does not match blog creator.",
+      });
+      return;
+    }
+
+    const deletion = await Blog.findByIdAndDelete(request.params.id);
+    response.status(201).send(deletion);
+    return;
   } catch (error) {
     next(error);
   }
