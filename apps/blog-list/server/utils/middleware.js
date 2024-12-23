@@ -22,6 +22,8 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).send({ error: err.message });
   } else if (err.message.includes("duplicate key error")) {
     return res.status(400).send({ error: "expected `username` to be unique" });
+  } else if (err.name === "JsonWebTokenError") {
+    return res.status(400).send({ error: "token is invalid or missing" });
   }
 
   next(err);

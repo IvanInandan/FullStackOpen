@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1c3RhdGVzdHVzZXIiLCJpZCI6IjY3NjliODM4MzI2YzMxZTJiNzUyODJlMCIsImlhdCI6MTczNDk4MzA4Nn0.Q3FklAJvmjMK0C5gR9HBr1yHOolarbRbrvDZvvocwZM
 
 {
     "title": "WORST BLOG EVER",
     "author": "worst author ever",
     "url": "worst blogs ever",
-    "userId": "675b3a868064c30fd58ae05e",
     "likes": 1
 }
