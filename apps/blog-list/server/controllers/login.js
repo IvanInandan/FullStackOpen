@@ -1,10 +1,14 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const loginRouter = require("express").Router();
 const User = require("../models/user");
 
+loginRouter.get("/", async (req, res, next) => {
+  res.status(200).send({ "Secret Key": process.env.SECRET });
+});
+
 loginRouter.post("/", async (req, res) => {
-  const { username, password } = request.body;
+  const { username, password } = req.body;
 
   const user = await User.findOne({ username });
   const passwordCorrect =

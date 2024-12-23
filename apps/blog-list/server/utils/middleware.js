@@ -24,7 +24,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(400).send({ error: "expected `username` to be unique" });
   }
 
-  next(error);
+  next(err);
 };
 
 module.exports = {
