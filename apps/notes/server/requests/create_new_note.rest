@@ -1,7 +1,7 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlpbmFuZGFuIiwiaWQiOiI2NzU0OTY4MDY0YzBkY2VlZTQ4NmVjMmIiLCJpYXQiOjE3MzM1OTg3NjEsImV4cCI6MTczMzYwMjM2MX0.5coI0QDLRa86x4cdpKNg7Eq6bYoGXQzmHRbhwMG3JeU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlpbmFuZGFuIiwiaWQiOiI2NzdkOTA2ZmNkZmI5NGM2MmY2YzNjNWEiLCJpYXQiOjE3MzYyODIyNDQsImV4cCI6MTczNjI4NTg0NH0.XRB3uoLHp-Tlyw7VS64WBXyRbTQrdZt209OGVP__vLo
 
 {
-    "content": "sick notes brother"
+    "content": "password is watashi858 btw"
 }
