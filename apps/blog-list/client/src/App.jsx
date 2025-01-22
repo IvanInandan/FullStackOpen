@@ -6,7 +6,8 @@ import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [status, setStatus] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -28,22 +29,36 @@ const App = () => {
     }
   }, []);
 
-  const createBlog = (event) => {
+  const createBlog = async (event) => {
     event.preventDefault();
-    console.log("Creating Blog!");
+    try {
+      const newBlog = {
+        title: blogTitle,
+        author: blogAuthor,
+        url: blogURL,
+      };
 
-    const newBlog = {
-      title: blogTitle,
-      author: blogAuthor,
-      url: blogURL,
-    };
+      const returnedBlog = await blogService.create(newBlog);
 
-    blogService.create(newBlog).then((returnedBlog) => {
+      setMessage("Blog successfully created");
+      setStatus(true);
+      setTimeout(() => {
+        setMessage(null);
+        setStatus(null);
+      }, 5000);
+
       setBlogs(blogs.concat(returnedBlog));
       setBlogTitle("");
       setBlogAuthor("");
       setBlogURL("");
-    });
+    } catch (exception) {
+      setMessage("Blog cannot be created");
+      setStatus(false);
+      setTimeout(() => {
+        setMessage(null);
+        setStatus(null);
+      }, 5000);
+    }
   };
 
   const handleLogin = async (event) => {
@@ -57,15 +72,16 @@ const App = () => {
       setUsername(""); // reset username state
       setPassword(""); // reset password state
     } catch (exception) {
-      setErrorMessage("wrong credentials"); // Set error message
+      setMessage("wrong credentials"); // Set error message
+      setStatus(false);
       setTimeout(() => {
-        setErrorMessage(null);
+        setMessage(null);
+        setStatus(null);
       }, 5000); // After 5 seconds, erase error message
     }
   };
 
   const handleLogout = () => {
-    event.preventDefault();
     window.localStorage.removeItem("loggeduser");
     setUser(null);
   };
@@ -140,7 +156,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage} />
+      <Notification message={message} status={status} />
       {!user && loginForm()}
       {user && (
         <>

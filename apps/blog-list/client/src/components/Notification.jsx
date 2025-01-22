@@ -1,8 +1,29 @@
-const Notification = ({ message }) => {
+const Notification = ({ message, status }) => {
   if (message === null) {
     return null;
   } else {
-    return <div className="error">{message}</div>;
+    const notifStyle =
+      status === true
+        ? {
+            color: "green",
+            background: "lightgrey",
+            fontSize: "20px",
+            borderStyle: "solid",
+            borderRadius: "5px",
+            padding: "10px",
+            marginBottom: "10px",
+          }
+        : {
+            color: "red",
+            background: "lightgrey",
+            fontSize: "20px",
+            borderStyle: "solid",
+            borderRadius: "5px",
+            padding: "10px",
+            marginBottom: "10px",
+          };
+
+    return <div style={notifStyle}>{message}</div>;
   }
 };
 
