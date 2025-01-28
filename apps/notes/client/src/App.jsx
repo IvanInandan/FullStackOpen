@@ -1,12 +1,15 @@
 import Note from "./components/Note";
 import Notification from "./components/Notification";
 import Footer from "./components/Footer";
+import LoginForm from "./components/LoginForm";
+import Togglable from "./components/Togglable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import noteService from "./services/notes";
 import loginService from "./services/login";
 
 const App = (props) => {
+  const [loginVisible, setLoginVisible] = useState(false);
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
@@ -94,28 +97,21 @@ const App = (props) => {
     }
   };
 
+  const handleLogout = () => {
+    window.localStorage.removeItem("loggedNoteappuser");
+    setUser(null);
+  };
+
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <Togglable buttonLabel="Login">
+      <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin}
+      />
+    </Togglable>
   );
 
   const noteForm = () => (
@@ -134,6 +130,7 @@ const App = (props) => {
       {user && (
         <div>
           <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>Logout</button>
           {noteForm()}
         </div>
       )}
