@@ -1,8 +1,9 @@
 import Note from "./components/Note";
 import Notification from "./components/Notification";
 import Footer from "./components/Footer";
-import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
+import LoginForm from "./components/LoginForm";
+import NoteForm from "./components/NoteForm";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import noteService from "./services/notes";
@@ -115,10 +116,13 @@ const App = (props) => {
   );
 
   const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
+    <Togglable buttonLabel="New note">
+      <NoteForm
+        onSubmit={addNote}
+        value={newNote}
+        handleChange={handleNoteChange}
+      />
+    </Togglable>
   );
 
   return (
