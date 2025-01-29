@@ -37,18 +37,16 @@ const App = (props) => {
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
-  const addNote = (event) => {
-    event.preventDefault();
-
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5,
-    };
-
-    noteService.create(noteObject).then((returnedNote) => {
+  const addNote = async (noteObject) => {
+    try {
+      const returnedNote = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
-      setNewNote("");
-    });
+    } catch (exception) {
+      setErrorMessage(exception.response.data.error);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
   };
 
   const handleNoteChange = (event) => {
@@ -117,11 +115,7 @@ const App = (props) => {
 
   const noteForm = () => (
     <Togglable buttonLabel="New note">
-      <NoteForm
-        onSubmit={addNote}
-        value={newNote}
-        handleChange={handleNoteChange}
-      />
+      <NoteForm createNote={addNote} />
     </Togglable>
   );
 
