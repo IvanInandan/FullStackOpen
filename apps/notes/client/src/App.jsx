@@ -79,17 +79,12 @@ const App = (props) => {
       });
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const handleLogin = async (login) => {
     try {
-      const user = await loginService.login({ username, password });
+      const user = await loginService.login(login);
       window.localStorage.setItem("loggedNoteappuser", JSON.stringify(user));
       noteService.setToken(user.token);
       setUser(user);
-      setUsername("");
-      setPassword("");
-
       console.log(user);
     } catch (exception) {
       setErrorMessage("wrong credentials");
@@ -106,13 +101,7 @@ const App = (props) => {
 
   const loginForm = () => (
     <Togglable buttonLabel="Login">
-      <LoginForm
-        username={username}
-        password={password}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-        handleSubmit={handleLogin}
-      />
+      <LoginForm handleLogin={handleLogin} />
     </Togglable>
   );
 
