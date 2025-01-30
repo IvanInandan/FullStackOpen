@@ -33,8 +33,8 @@ const App = () => {
 
   const createBlog = async (newBlog) => {
     try {
-      blogFormRef.current.toggleVisibility();
       const returnedBlog = await blogService.create(newBlog);
+      blogFormRef.current.toggleVisibility(); // Only toggle visibility of form after successful creation
       setBlogs(blogs.concat(returnedBlog));
 
       setMessage("Blog successfully created");
