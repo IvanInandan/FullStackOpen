@@ -57,13 +57,17 @@ const App = () => {
     try {
       const returnedBlog = await blogService.update(updatedBlog, id);
 
-      setBlogs((prevBlogs) =>
-        prevBlogs.map((blog) =>
+      setBlogs((prevBlogs) => {
+        // Update the blog in the array
+        const updatedBlogs = prevBlogs.map((blog) =>
           blog.id === returnedBlog.id
             ? { ...returnedBlog, user: blog.user }
             : blog
-        )
-      );
+        );
+
+        // Sort the blogs by likes in descending order
+        return updatedBlogs.sort((a, b) => b.likes - a.likes);
+      });
 
       setMessage("Increased like counter!");
       setStatus(true);
