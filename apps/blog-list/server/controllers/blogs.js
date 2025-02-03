@@ -38,6 +38,7 @@ blogRouter.post(
       user.blogs = user.blogs.concat(newBlog._id);
       await user.save();
 
+      // Populates 'user' field with both name & username, turning it into an object. Previously only string of user.id (ie: user: '123123123')
       const populatedBlog = await Blog.findById(newBlog._id).populate("user", {
         name: 1,
         username: 1,
@@ -55,7 +56,6 @@ blogRouter.delete(
   middleware.userExtractor, //middleware only applied on this route
   async (request, response, next) => {
     try {
-      console.log(request.params);
       const result = await Blog.findById(request.params.id);
       const userID = result.user.toString();
 
@@ -76,6 +76,11 @@ blogRouter.delete(
 
       const deletion = await Blog.findByIdAndDelete(request.params.id);
       response.status(201).send(deletion);
+
+      await User.findByIdAndUpdate(userID, {
+        $pull: { blogs: request.params.id },
+      });
+
       return;
     } catch (error) {
       next(error);
