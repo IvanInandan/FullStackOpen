@@ -59,7 +59,9 @@ const App = () => {
 
       setBlogs((prevBlogs) =>
         prevBlogs.map((blog) =>
-          blog.id === returnedBlog.id ? returnedBlog : blog
+          blog.id === returnedBlog.id
+            ? { ...returnedBlog, user: blog.user }
+            : blog
         )
       );
 
@@ -148,7 +150,6 @@ const App = () => {
             {user.name} is logged in
             <button onClick={handleLogout}>Logout</button>
           </p>
-
           {blogForm()}
 
           <h2>Blogs</h2>

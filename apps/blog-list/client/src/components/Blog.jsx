@@ -15,11 +15,11 @@ const Blog = ({ blog, addLike }) => {
     event.preventDefault();
 
     const updatedBlog = {
-      user: blog.user.id,
       likes: blog.likes + 1,
       author: blog.author,
       title: blog.title,
       url: blog.url,
+      user: blog.user.id,
     };
 
     addLike(updatedBlog, blog.id);
