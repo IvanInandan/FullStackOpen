@@ -30,8 +30,8 @@ blogRouter.post(
         title: body.title,
         author: body.author,
         url: body.url,
-        user: tokenUser.id,
         likes: body.likes,
+        user: tokenUser.id,
       });
 
       const newBlog = await blog.save();
@@ -55,6 +55,7 @@ blogRouter.delete(
   middleware.userExtractor, //middleware only applied on this route
   async (request, response, next) => {
     try {
+      console.log(request.params);
       const result = await Blog.findById(request.params.id);
       const userID = result.user.toString();
 
@@ -101,7 +102,15 @@ blogRouter.put(
         return response.status(404).json({ error: "Blog not found" });
       }
 
-      response.status(200).json(updatedBlog);
+      const populatedBlog = await Blog.findById(updatedBlog._id).populate(
+        "user",
+        {
+          name: 1,
+          username: 1,
+        }
+      );
+
+      response.status(200).json(populatedBlog);
     } catch (error) {
       next(error);
     }

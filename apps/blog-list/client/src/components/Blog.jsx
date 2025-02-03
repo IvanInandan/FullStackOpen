@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ blog, addLike, deleteBlog }) => {
   const [allInfo, setAllInfo] = useState(false);
 
   const blogStyle = {
@@ -15,14 +15,17 @@ const Blog = ({ blog, addLike }) => {
     event.preventDefault();
 
     const updatedBlog = {
+      ...blog,
       likes: blog.likes + 1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url,
       user: blog.user.id,
     };
 
     addLike(updatedBlog, blog.id);
+  };
+
+  const removeBlog = (event) => {
+    event.preventDefault();
+    deleteBlog(blog.id);
   };
 
   return (
@@ -42,6 +45,7 @@ const Blog = ({ blog, addLike }) => {
             <button onClick={increaseLike}>like</button>
           </div>
           <div>{blog.user.name}</div>
+          <button onClick={removeBlog}>delete</button>
         </div>
       )}
     </div>

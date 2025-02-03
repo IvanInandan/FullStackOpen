@@ -44,7 +44,29 @@ const App = () => {
         setStatus(null);
       }, 5000);
     } catch (exception) {
-      setMessage("Blog cannot be created");
+      setMessage(exception.response.data.error);
+      setStatus(false);
+      setTimeout(() => {
+        setMessage(null);
+        setStatus(null);
+      }, 5000);
+    }
+  };
+
+  const deleteBlog = async (id) => {
+    try {
+      console.log("Attempting to delete blog");
+      const deletedBlog = await blogService.remove(id);
+      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+
+      setMessage("Blog successfully deleted");
+      setStatus(true);
+      setTimeout(() => {
+        setMessage(null);
+        setStatus(null);
+      }, 5000);
+    } catch (exception) {
+      setMessage(exception.response.data.error);
       setStatus(false);
       setTimeout(() => {
         setMessage(null);
@@ -76,7 +98,7 @@ const App = () => {
         setStatus(null);
       }, 5000);
     } catch (exception) {
-      setMessage("Error updating likes");
+      setMessage(exception.response.data.error);
       setStatus(false);
       setTimeout(() => {
         setMessage(null);
@@ -96,7 +118,7 @@ const App = () => {
       setUsername(""); // reset username state
       setPassword(""); // reset password state
     } catch (exception) {
-      setMessage("wrong credentials"); // Set error message
+      setMessage(exception.response.data.error);
       setStatus(false);
       setTimeout(() => {
         setMessage(null);
@@ -158,7 +180,12 @@ const App = () => {
 
           <h2>Blogs</h2>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} addLike={addLike} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              addLike={addLike}
+              deleteBlog={deleteBlog}
+            />
           ))}
         </>
       )}
