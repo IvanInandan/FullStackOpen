@@ -53,6 +53,32 @@ const App = () => {
     }
   };
 
+  const addLike = async (updatedBlog, id) => {
+    try {
+      const returnedBlog = await blogService.update(updatedBlog, id);
+
+      setBlogs((prevBlogs) =>
+        prevBlogs.map((blog) =>
+          blog.id === returnedBlog.id ? returnedBlog : blog
+        )
+      );
+
+      setMessage("Increased like counter!");
+      setStatus(true);
+      setTimeout(() => {
+        setMessage(null);
+        setStatus(null);
+      }, 5000);
+    } catch (exception) {
+      setMessage("Error updating likes");
+      setStatus(false);
+      setTimeout(() => {
+        setMessage(null);
+        setStatus(null);
+      }, 5000);
+    }
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -127,7 +153,7 @@ const App = () => {
 
           <h2>Blogs</h2>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} addLike={addLike} />
           ))}
         </>
       )}

@@ -76,26 +76,30 @@ blogRouter.delete(
   }
 );
 
-blogRouter.put("/:id", async (request, response, next) => {
-  try {
-    const updatedFields = request.body;
-    console.log("Updated Fields: ", updatedFields);
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      request.params.id,
-      updatedFields,
-      {
-        new: true,
+blogRouter.put(
+  "/:id",
+  middleware.userExtractor,
+  async (request, response, next) => {
+    try {
+      const updatedFields = request.body;
+
+      const updatedBlog = await Blog.findByIdAndUpdate(
+        request.params.id,
+        updatedFields,
+        {
+          new: true,
+        }
+      );
+
+      if (!updatedBlog) {
+        return response.status(404).json({ error: "Blog not found" });
       }
-    );
 
-    if (!updatedBlog) {
-      return response.status(404).json({ error: "Blog not found" });
+      response.status(200).json(updatedBlog);
+    } catch (error) {
+      next(error);
     }
-
-    response.status(200).json(updatedBlog);
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 module.exports = blogRouter;

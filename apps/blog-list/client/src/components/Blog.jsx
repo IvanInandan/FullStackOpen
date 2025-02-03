@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike }) => {
   const [allInfo, setAllInfo] = useState(false);
 
   const blogStyle = {
@@ -11,7 +11,19 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   };
 
-  console.log(blog);
+  const increaseLike = (event) => {
+    event.preventDefault();
+
+    const updatedBlog = {
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+    };
+
+    addLike(updatedBlog, blog.id);
+  };
 
   return (
     <div style={blogStyle}>
@@ -25,8 +37,11 @@ const Blog = ({ blog }) => {
       {allInfo && (
         <div>
           <div>{blog.url}</div>
-          <div>{blog.likes}</div>
-          <div>{blog.id}</div>
+          <div>
+            {blog.likes}
+            <button onClick={increaseLike}>like</button>
+          </div>
+          <div>{blog.user.name}</div>
         </div>
       )}
     </div>
