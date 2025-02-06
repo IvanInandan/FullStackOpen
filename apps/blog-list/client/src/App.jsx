@@ -23,7 +23,6 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggeduser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      console.log(user);
       setUser(user);
       blogService.setToken(user.token);
     }
@@ -107,7 +106,6 @@ const App = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      console.log(username, password);
       const user = await loginService.login({ username, password });
       window.localStorage.setItem("loggeduser", JSON.stringify(user));
       blogService.setToken(user.token);
