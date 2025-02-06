@@ -82,7 +82,7 @@ const App = () => {
         const updatedBlogs = prevBlogs.map((blog) =>
           blog.id === returnedBlog.id
             ? { ...returnedBlog, user: blog.user }
-            : blog
+            : blog,
         );
 
         // Sort the blogs by likes in descending order
@@ -113,7 +113,6 @@ const App = () => {
       blogService.setToken(user.token);
       setUser(user); // set user state to user retrieved by loginService function login
     } catch (exception) {
-      console.log("Entering error");
       setMessage(exception.response.data.error);
       setStatus(false);
       setTimeout(() => {
