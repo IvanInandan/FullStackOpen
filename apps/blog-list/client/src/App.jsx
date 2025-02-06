@@ -11,8 +11,6 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState(null);
   const [status, setStatus] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
   const blogFormRef = useRef();
@@ -107,10 +105,9 @@ const App = () => {
     }
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
+  const handleLogin = async (username, password) => {
     try {
+      console.log(username, password);
       const user = await loginService.login({ username, password });
       window.localStorage.setItem("loggeduser", JSON.stringify(user));
       blogService.setToken(user.token);
@@ -132,33 +129,7 @@ const App = () => {
     setUser(null);
   };
 
-  const loginForm = () => (
-    <>
-      <h2>Login</h2>
-
-      <form onSubmit={handleLogin}>
-        <div>
-          Username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          Password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </>
-  );
+  const loginForm = () => <LoginForm handleLogin={handleLogin} />;
 
   const blogForm = () => (
     <Togglable buttonLabel="Create Blog" ref={blogFormRef}>
