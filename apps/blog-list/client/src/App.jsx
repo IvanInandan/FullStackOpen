@@ -36,7 +36,7 @@ const App = () => {
       setBlogs(blogs.concat(returnedBlog));
 
       setMessage("Blog successfully created");
-      setStatus(true);
+      setStatus("Hello");
       setTimeout(() => {
         setMessage(null);
         setStatus(null);
@@ -82,7 +82,7 @@ const App = () => {
         const updatedBlogs = prevBlogs.map((blog) =>
           blog.id === returnedBlog.id
             ? { ...returnedBlog, user: blog.user }
-            : blog,
+            : blog
         );
 
         // Sort the blogs by likes in descending order

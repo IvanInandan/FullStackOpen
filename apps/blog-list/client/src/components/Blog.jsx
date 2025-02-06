@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import PropTypes from "prop-types";
+
 const Blog = ({ blog, addLike, deleteBlog, user }) => {
   const [allInfo, setAllInfo] = useState(false);
   const isVisible = blog.user.id == user.id ? true : false; // If blog creator ID matches logged in user, then toggle show flag
@@ -30,6 +32,13 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
     if (window.confirm("Do you really want to delete this blog?")) {
       deleteBlog(blog.id);
     }
+  };
+
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    addLike: PropTypes.func.isRequired,
+    deleteBlog: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
   };
 
   return (
