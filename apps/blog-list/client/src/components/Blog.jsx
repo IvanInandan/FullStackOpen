@@ -25,7 +25,10 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
 
   const removeBlog = (event) => {
     event.preventDefault();
-    deleteBlog(blog.id);
+
+    if (window.confirm("Do you really want to delete this blog?")) {
+      deleteBlog(blog.id);
+    }
   };
 
   return (
