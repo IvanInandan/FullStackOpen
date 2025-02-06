@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-const Blog = ({ blog, addLike, deleteBlog }) => {
+const Blog = ({ blog, addLike, deleteBlog, user }) => {
   const [allInfo, setAllInfo] = useState(false);
+  const isVisible = blog.user.id == user.id ? true : false; // If blog creator ID matches logged in user, then toggle show flag
 
   const blogStyle = {
     paddingTop: 10,
@@ -48,7 +49,7 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
             <button onClick={increaseLike}>like</button>
           </div>
           <div>{blog.user.name}</div>
-          <button onClick={removeBlog}>delete</button>
+          {isVisible && <button onClick={removeBlog}>delete</button>}
         </div>
       )}
     </div>

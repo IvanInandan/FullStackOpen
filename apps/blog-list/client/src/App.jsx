@@ -185,6 +185,7 @@ const App = () => {
               blog={blog}
               addLike={addLike}
               deleteBlog={deleteBlog}
+              user={user}
             />
           ))}
         </>
