@@ -1,12 +1,20 @@
+import PropTypes from "prop-types";
+
 import { useState } from "react";
 
 const LoginForm = ({ handleLogin }) => {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const attemptLogin = (event) => {
     event.preventDefault();
     handleLogin(username, password);
+    setUsername(""); // reset username state
+    setPassword(""); // reset password state
+  };
+
+  LoginForm.propTypes = {
+    handleLogin: PropTypes.func.isRequired,
   };
 
   return (

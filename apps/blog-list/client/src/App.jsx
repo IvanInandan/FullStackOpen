@@ -112,9 +112,8 @@ const App = () => {
       window.localStorage.setItem("loggeduser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user); // set user state to user retrieved by loginService function login
-      setUsername(""); // reset username state
-      setPassword(""); // reset password state
     } catch (exception) {
+      console.log("Entering error");
       setMessage(exception.response.data.error);
       setStatus(false);
       setTimeout(() => {
