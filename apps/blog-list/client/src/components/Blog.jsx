@@ -44,7 +44,8 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author}
+        <span>{blog.title}</span>
+        <span>{blog.author}</span>
         <button onClick={() => setAllInfo(!allInfo)}>
           {allInfo ? "hide" : "view"}
         </button>
@@ -52,12 +53,16 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
 
       {allInfo && (
         <div>
-          <div>{blog.url}</div>
           <div>
-            {blog.likes}
+            <span>{blog.url}</span>
+          </div>
+          <div>
+            <span>{blog.likes}</span>
             <button onClick={increaseLike}>like</button>
           </div>
-          <div>{blog.user.name}</div>
+          <div>
+            <span>{blog.user.name}</span>
+          </div>
           {isVisible && <button onClick={removeBlog}>delete</button>}
         </div>
       )}
