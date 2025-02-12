@@ -6,6 +6,7 @@ describe("blog component", () => {
   let blog;
   let user;
   let container;
+  let likeHandler;
 
   beforeEach(() => {
     blog = {
@@ -26,8 +27,15 @@ describe("blog component", () => {
       name: "Ivan Inandan",
     };
 
+    likeHandler = vi.fn();
+
     container = render(
-      <Blog blog={blog} user={user} addLike={vi.fn()} deleteBlog={vi.fn()} />
+      <Blog
+        blog={blog}
+        user={user}
+        addLike={likeHandler}
+        deleteBlog={vi.fn()}
+      />
     ).container;
   });
 
@@ -37,8 +45,6 @@ describe("blog component", () => {
 
     expect(screen.queryByText("0")).not.toBeInTheDocument();
     expect(screen.queryByText("test url")).not.toBeInTheDocument();
-
-    screen.debug();
   });
 
   test("after view button is pressed, url/likes/user are shown", async () => {
@@ -49,7 +55,17 @@ describe("blog component", () => {
     expect(screen.getByText("0")).toBeVisible();
     expect(screen.getByText("test url")).toBeVisible();
     expect(screen.getByText("Ivan Inandan")).toBeVisible();
+  });
 
-    screen.debug();
+  test("after like button is pressed, event handler function is called twice", async () => {
+    const userEve = userEvent.setup();
+    const showInfo = container.querySelector(".toggleVis");
+    await userEve.click(showInfo);
+
+    const likeBlog = container.querySelector(".likeBlog");
+    await userEve.click(likeBlog);
+    await userEve.click(likeBlog);
+
+    expect(likeHandler.mock.calls).toHaveLength(2);
   });
 });

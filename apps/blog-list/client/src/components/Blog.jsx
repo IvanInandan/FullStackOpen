@@ -46,7 +46,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
       <div>
         <span>{blog.title}</span>
         <span>{blog.author}</span>
-        <button class="toggleVis" onClick={() => setAllInfo(!allInfo)}>
+        <button className="toggleVis" onClick={() => setAllInfo(!allInfo)}>
           {allInfo ? "hide" : "view"}
         </button>
       </div>
@@ -58,7 +58,9 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
           </div>
           <div>
             <span>{blog.likes}</span>
-            <button onClick={increaseLike}>like</button>
+            <button className="likeBlog" onClick={increaseLike}>
+              like
+            </button>
           </div>
           <div>
             <span>{blog.user.name}</span>
