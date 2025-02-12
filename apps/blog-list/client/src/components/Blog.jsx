@@ -46,7 +46,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
       <div>
         <span>{blog.title}</span>
         <span>{blog.author}</span>
-        <button onClick={() => setAllInfo(!allInfo)}>
+        <button class="toggleVis" onClick={() => setAllInfo(!allInfo)}>
           {allInfo ? "hide" : "view"}
         </button>
       </div>
