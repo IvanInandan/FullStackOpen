@@ -35,7 +35,7 @@ const App = () => {
       setBlogs(blogs.concat(returnedBlog));
 
       setMessage("Blog successfully created");
-      setStatus("Hello");
+      setStatus(true);
       setTimeout(() => {
         setMessage(null);
         setStatus(null);

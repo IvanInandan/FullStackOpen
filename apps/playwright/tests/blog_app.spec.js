@@ -52,5 +52,38 @@ describe("Blog app", () => {
       await createBlog(page, "test title", "test author", "test url");
       await expect(page.getByText("test title")).toBeVisible();
     });
+
+    describe("when a note exists in the database", () => {
+      beforeEach(async ({ page }) => {
+        await page.getByRole("button", { name: "Create Blog" }).click();
+        await createBlog(page, "test title", "test author", "test url");
+      });
+
+      test("blog can be expanded", async ({ page }) => {
+        const blogElement = page
+          .getByText("test title")
+          .locator("..")
+          .locator("..");
+        await blogElement
+          .locator(".info")
+          .getByRole("button", { name: "view" })
+          .click();
+        await expect(
+          blogElement.getByRole("button", { name: "like" })
+        ).toBeVisible();
+      });
+
+      test.only("blog can be liked", async ({ page }) => {
+        // Locate 'test title' blog, locate it's parent because this is where view button is located, click on view button
+        await page
+          .getByText("test title")
+          .locator("..")
+          .getByRole("button", { name: "view" })
+          .click();
+
+        await page.getByRole("button", { name: "like" }).click();
+        await expect(page.getByText("1")).toBeVisible();
+      });
+    });
   });
 });

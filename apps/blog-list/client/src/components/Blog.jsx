@@ -43,7 +43,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className="info">
         <span>{blog.title}</span>
         <span>{blog.author}</span>
         <button className="toggleVis" onClick={() => setAllInfo(!allInfo)}>
@@ -52,7 +52,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
       </div>
 
       {allInfo && (
-        <div>
+        <div className="more-info">
           <div>
             <span>{blog.url}</span>
           </div>
