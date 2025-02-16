@@ -23,7 +23,11 @@ const Notification = ({ message, status }) => {
             marginBottom: "10px",
           };
 
-    return <div style={notifStyle}>{message}</div>;
+    return (
+      <div className="notif" style={notifStyle}>
+        {message}
+      </div>
+    );
   }
 };
 
