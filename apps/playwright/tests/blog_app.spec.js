@@ -5,11 +5,19 @@ describe("Blog app", () => {
   // Before every test (global)
   beforeEach(async ({ page, request }) => {
     await request.post("http://localhost:3003/api/test/reset"); // Reset database at start of every test
-    // Load initial test user
+    // Load initial test user(s)
     await request.post("http://localhost:3003/api/users", {
       data: {
         name: "Ivan Inandan",
         username: "iinandan97",
+        password: "password",
+      },
+    });
+
+    await request.post("http://localhost:3003/api/users", {
+      data: {
+        name: "Learose Miranda",
+        username: "lmiranda01",
         password: "password",
       },
     });
@@ -73,7 +81,7 @@ describe("Blog app", () => {
         ).toBeVisible();
       });
 
-      test.only("blog can be liked", async ({ page }) => {
+      test("blog can be liked", async ({ page }) => {
         // Locate 'test title' blog, locate it's parent because this is where view button is located, click on view button
         await page
           .getByText("test title")
@@ -83,6 +91,45 @@ describe("Blog app", () => {
 
         await page.getByRole("button", { name: "like" }).click();
         await expect(page.getByText("1")).toBeVisible();
+      });
+
+      test("blog can be deleted by user who made it", async ({ page }) => {
+        await page
+          .getByText("test title")
+          .locator("..")
+          .getByRole("button", { name: "view" })
+          .click();
+
+        // Need to set up handler before dialog shows up so playwright knows how to deal with it
+        page.on("dialog", async (dialog) => {
+          console.log(`Dialog message: ${dialog.message()}`); // Logs the message
+          await dialog.accept(); // Clicks "OK" (accepts the confirmation)
+        });
+
+        await page.getByRole("button", { name: "delete" }).click();
+        await expect(page.getByText("test title")).not.toBeVisible();
+
+        const notif = page.locator(".notif");
+        await expect(notif).toHaveText("Blog successfully deleted");
+      });
+
+      test.only("blog deletion is only visible to creator", async ({
+        page,
+      }) => {
+        await page.getByRole("button", { name: "Logout" }).click();
+        await loginWith(page, "lmiranda01", "password");
+        await expect(
+          page.getByText("Learose Miranda is logged in")
+        ).toBeVisible();
+        await page
+          .getByText("test title")
+          .locator("..")
+          .getByRole("button", { name: "view" })
+          .click();
+        await expect(page.getByText("test url")).toBeVisible();
+        await expect(
+          page.getByRole("button", { name: "delete" })
+        ).not.toBeVisible();
       });
     });
   });
