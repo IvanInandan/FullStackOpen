@@ -19,7 +19,7 @@ const LoginForm = ({ handleLogin }) => {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2 data-testid="login">Login</h2>
 
       <form onSubmit={attemptLogin}>
         <div>

@@ -100,7 +100,7 @@ const App = (props) => {
   };
 
   const loginForm = () => (
-    <Togglable buttonLabel="Login">
+    <Togglable buttonLabel="log in">
       <LoginForm handleLogin={handleLogin} />
     </Togglable>
   );
