@@ -113,9 +113,7 @@ describe("Blog app", () => {
         await expect(notif).toHaveText("Blog successfully deleted");
       });
 
-      test.only("blog deletion is only visible to creator", async ({
-        page,
-      }) => {
+      test("blog deletion is only visible to creator", async ({ page }) => {
         await page.getByRole("button", { name: "Logout" }).click();
         await loginWith(page, "lmiranda01", "password");
         await expect(
@@ -130,6 +128,30 @@ describe("Blog app", () => {
         await expect(
           page.getByRole("button", { name: "delete" })
         ).not.toBeVisible();
+      });
+    });
+
+    describe("when multiple blogs exist", () => {
+      beforeEach(async ({ page }) => {
+        await page.getByRole("button", { name: "Create Blog" }).click();
+        await createBlog(page, "zero likes", "test author", "test url");
+
+        await page.getByRole("button", { name: "Create Blog" }).click();
+        await createBlog(page, "most likes", "test author", "test url");
+
+        await page.getByRole("button", { name: "Create Blog" }).click();
+        await createBlog(page, "least likes", "test author", "test url");
+
+        await page.getByRole("button", { name: "Create Blog" }).click();
+        await createBlog(page, "middle likes", "test author", "test url");
+      });
+
+      test.only("blogs are ordered based on likes", async ({ page }) => {
+        const blogs = await page.locator(".blog").all();
+        await expect(blogs[0].getByText("most likes")).toBeVisible();
+        await expect(blogs[1].getByText("middle likes")).toBeVisible();
+        await expect(blogs[2].getByText("least likes")).toBeVisible();
+        await expect(blogs[3].getByText("zero likes")).toBeVisible();
       });
     });
   });

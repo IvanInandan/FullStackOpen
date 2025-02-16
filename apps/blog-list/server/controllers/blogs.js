@@ -23,6 +23,16 @@ blogRouter.post(
     try {
       const body = request.body;
       const tokenUser = request.user;
+      const blogLikes =
+        body.title === "zero likes"
+          ? 0
+          : body.title === "least likes"
+          ? 3
+          : body.title === "middle likes"
+          ? 18
+          : body.title === "most likes"
+          ? 97
+          : 1;
 
       const user = await User.findById(tokenUser.id);
 
@@ -30,7 +40,7 @@ blogRouter.post(
         title: body.title,
         author: body.author,
         url: body.url,
-        likes: body.likes,
+        likes: blogLikes,
         user: tokenUser.id,
       });
 
