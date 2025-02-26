@@ -38,11 +38,34 @@ const reducer = (state = initialState, action) => {
         anecdote.id !== id ? anecdote : updatedAnecdote
       );
 
+    case "ADD":
+      console.log("IN ADD CASE: ");
+      return [...state, action.payload];
+
     default:
       return state;
   }
+};
 
-  return state;
+export const vote = (id) => {
+  console.log("vote", id);
+
+  return {
+    type: "VOTE",
+    payload: { id },
+  };
+};
+
+export const add = (anecdote) => {
+  console.log("adding", anecdote);
+  return {
+    type: "ADD",
+    payload: {
+      content: anecdote,
+      id: getId(),
+      votes: 0,
+    },
+  };
 };
 
 export default reducer;
