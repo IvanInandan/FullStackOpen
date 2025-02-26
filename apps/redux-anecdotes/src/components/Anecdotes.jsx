@@ -13,7 +13,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
   );
 };
 
-const Anecdotes = () => {
+const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -32,4 +32,4 @@ const Anecdotes = () => {
   );
 };
 
-export default Anecdotes;
+export default AnecdoteList;
