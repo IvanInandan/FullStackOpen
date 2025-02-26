@@ -4,9 +4,9 @@ const { loginWith, createBlog } = require("./blog-helper");
 describe("Blog app", () => {
   // Before every test (global)
   beforeEach(async ({ page, request }) => {
-    await request.post("http://localhost:3003/api/test/reset"); // Reset database at start of every test
+    await request.post("/api/test/reset"); // Reset database at start of every test
     // Load initial test user(s)
-    await request.post("http://localhost:3003/api/users", {
+    await request.post("/api/users", {
       data: {
         name: "Ivan Inandan",
         username: "iinandan97",
@@ -14,7 +14,7 @@ describe("Blog app", () => {
       },
     });
 
-    await request.post("http://localhost:3003/api/users", {
+    await request.post("/api/users", {
       data: {
         name: "Learose Miranda",
         username: "lmiranda01",
