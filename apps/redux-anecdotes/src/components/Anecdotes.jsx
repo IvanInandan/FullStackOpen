@@ -14,7 +14,12 @@ const Anecdote = ({ anecdote, handleClick }) => {
 };
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
+  const anecdotes = useSelector(({ anecdotes, filter }) =>
+    anecdotes.filter((anecdote) => anecdote.content.includes(filter))
+  );
+
+  console.log(anecdotes);
+
   const dispatch = useDispatch();
 
   return (
