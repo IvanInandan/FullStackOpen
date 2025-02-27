@@ -18,7 +18,7 @@ const AnecdoteList = () => {
     anecdotes.filter((anecdote) => anecdote.content.includes(filter))
   );
 
-  console.log(anecdotes);
+  console.log("Anecdotes: ", anecdotes);
 
   const dispatch = useDispatch();
 
