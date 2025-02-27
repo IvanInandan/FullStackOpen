@@ -12,7 +12,13 @@ const Note = ({ note, handleClick }) => {
 
 const Notes = () => {
   const dispatch = useDispatch(); // Replaces store.dispatch()
-  const notes = useSelector((state) => state); // useSelector monitors state changes and re-renders automatically when state updates. No more need for store.subscribe() & renderApp()
+  const notes = useSelector((state) => {
+    return state.filter === "ALL" // If filter states ALL
+      ? state.notes // Return all notes
+      : state.filter === "IMPORTANT" // Else see if it says important
+      ? state.notes.filter((note) => note.important) // If true, return important notes
+      : state.notes.filter((note) => !note.important); // Otherwise, return nonimportant notes
+  });
 
   return (
     <ul>
