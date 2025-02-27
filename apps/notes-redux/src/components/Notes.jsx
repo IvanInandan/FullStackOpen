@@ -12,12 +12,12 @@ const Note = ({ note, handleClick }) => {
 
 const Notes = () => {
   const dispatch = useDispatch(); // Replaces store.dispatch()
-  const notes = useSelector((state) => {
-    return state.filter === "ALL" // If filter states ALL
-      ? state.notes // Return all notes
-      : state.filter === "IMPORTANT" // Else see if it says important
-      ? state.notes.filter((note) => note.important) // If true, return important notes
-      : state.notes.filter((note) => !note.important); // Otherwise, return nonimportant notes
+  const notes = useSelector(({ filter, notes }) => {
+    return filter === "ALL" // If filter states ALL
+      ? notes // Return all notes
+      : filter === "IMPORTANT" // Else see if it says important
+      ? notes.filter((note) => note.important) // If true, return important notes
+      : notes.filter((note) => !note.important); // Otherwise, return nonimportant notes
   });
 
   return (
