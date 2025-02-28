@@ -31,11 +31,15 @@ const anecdoteSlice = createSlice({
       );
     },
 
+    append(state, action) {
+      state.push(action.payload);
+    },
+
     set(state, action) {
       return action.payload;
     },
   },
 });
 
-export const { add, vote, set } = anecdoteSlice.actions;
+export const { add, vote, append, set } = anecdoteSlice.actions;
 export default anecdoteSlice.reducer;
