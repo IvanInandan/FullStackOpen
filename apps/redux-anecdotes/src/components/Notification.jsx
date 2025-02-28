@@ -13,13 +13,9 @@ const Notification = () => {
 
   if (notification === null) {
     return null;
-  } else {
-    setTimeout(() => {
-      dispatch(clearNotif());
-    }, 3000);
-
-    return <div style={style}>{notification}</div>;
   }
+
+  return <div style={style}>{notification}</div>;
 };
 
 export default Notification;
