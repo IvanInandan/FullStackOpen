@@ -10,6 +10,7 @@ import Filter from "./components/Filter";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     anecdoteService.getAll().then((anecdotes) => {
       dispatch(set(anecdotes));
