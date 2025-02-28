@@ -64,5 +64,16 @@ export const createAnecdote = (content) => {
   };
 };
 
+export const voteAnecdote = (id) => {
+  return async (dispatch) => {
+    try {
+      const anecdote = await anecdoteService.updateVote(id);
+      dispatch(vote(anecdote.id));
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+};
+
 export const { add, vote, append, set } = anecdoteSlice.actions;
 export default anecdoteSlice.reducer;
