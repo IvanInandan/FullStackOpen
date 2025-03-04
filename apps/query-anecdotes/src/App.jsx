@@ -14,21 +14,21 @@ const App = () => {
 
   const voteAnecdoteMutation = useMutation({
     mutationFn: voteAnecdote,
-    onSuccess: () => {
+    onSuccess: (anecdote) => {
       queryClient.invalidateQueries({
         queryKey: ["anecdotes"],
+      });
+
+      // Display notification
+      dispatch({
+        type: "SHOW",
+        payload: `ID: ${anecdote.id} has been voted on!`,
       });
     },
   });
 
   const handleVote = (anecdote) => {
     voteAnecdoteMutation.mutate(anecdote);
-
-    // Display notification
-    dispatch({
-      type: "SHOW",
-      payload: `${anecdote.id} has been voted on!`,
-    });
   };
 
   // First establish useQuery

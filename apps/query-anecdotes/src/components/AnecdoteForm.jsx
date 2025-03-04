@@ -23,11 +23,10 @@ const AnecdoteForm = () => {
       });
     },
 
-    onFailure: (error) => {
-      console.log("ERROR: ", error);
+    onError: (error) => {
       dispatch({
         type: "SHOW",
-        payload: "ERROR: Anecdote has to be longer than 5 characters",
+        payload: error.response.data.error,
       });
     },
   });
