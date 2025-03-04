@@ -15,6 +15,20 @@ const AnecdoteForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["anecdotes"],
       });
+
+      // Display notification
+      dispatch({
+        type: "SHOW",
+        payload: `Anecdote "${newAnecdote.content}" has been added`,
+      });
+    },
+
+    onFailure: (error) => {
+      console.log("ERROR: ", error);
+      dispatch({
+        type: "SHOW",
+        payload: "ERROR: Anecdote has to be longer than 5 characters",
+      });
     },
   });
 
@@ -23,17 +37,6 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
     addAnecdoteMutation.mutate({ content, votes: 0 });
-
-    // Display notification
-    dispatch({
-      type: "SHOW",
-      payload: `Anecdote "${content}" has been added`,
-    });
-
-    // Clear notification after 3 seconds
-    setTimeout(() => {
-      dispatch({ type: "HIDE" });
-    }, 3000);
   };
 
   return (

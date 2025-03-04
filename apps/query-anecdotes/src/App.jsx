@@ -1,3 +1,4 @@
+import Anecdotes from "./components/Anecdotes";
 import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
@@ -38,8 +39,6 @@ const App = () => {
     // accomplishes this by not setting result.isError to true on fail until it retries once.
   });
 
-  console.log(JSON.parse(JSON.stringify(result)));
-
   // Then check if in loading state
   if (result.isLoading) {
     return <div>loading data...</div>;
@@ -61,16 +60,7 @@ const App = () => {
 
       <Notification />
       <AnecdoteForm />
-
-      {anecdotes.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
-          </div>
-        </div>
-      ))}
+      <Anecdotes anecdotes={anecdotes} handleVote={handleVote} />
     </div>
   );
 };
