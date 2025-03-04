@@ -1,18 +1,35 @@
+import {
+  useNotificationValue,
+  useNotificationDispatch,
+} from "../NotificationContext";
+import { useEffect } from "react";
+
 const Notification = () => {
+  const notification = useNotificationValue();
+  const dispatch = useNotificationDispatch();
+
+  // useEffect deals with clearing notification; runs/triggered on notification/dispatch change
+  useEffect(() => {
+    if (notification) {
+      const timeout = setTimeout(() => {
+        dispatch({ type: "HIDE" });
+      }, 3000); // Hide after 3 seconds
+
+      // Cleanup the timeout if notification changes before timeout ends
+      return () => clearTimeout(timeout);
+    }
+  }, [notification, dispatch]); // Only run when notification changes
+
   const style = {
-    border: 'solid',
+    border: "solid",
     padding: 10,
     borderWidth: 1,
-    marginBottom: 5
-  }
-  
-  if (true) return null
+    marginBottom: 5,
+  };
 
-  return (
-    <div style={style}>
-      
-    </div>
-  )
-}
+  if (notification === "") return null;
 
-export default Notification
+  return <div style={style}>{notification}</div>;
+};
+
+export default Notification;

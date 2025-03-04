@@ -2,9 +2,14 @@ import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { getAnecdotes, voteAnecdote } from "./services/anecdotes";
+import {
+  useNotificationValue,
+  useNotificationDispatch,
+} from "./NotificationContext";
 
 const App = () => {
   const queryClient = useQueryClient();
+  const dispatch = useNotificationDispatch();
 
   const voteAnecdoteMutation = useMutation({
     mutationFn: voteAnecdote,
@@ -16,8 +21,13 @@ const App = () => {
   });
 
   const handleVote = (anecdote) => {
-    console.log("voting");
     voteAnecdoteMutation.mutate(anecdote);
+
+    // Display notification
+    dispatch({
+      type: "SHOW",
+      payload: `${anecdote.id} has been voted on!`,
+    });
   };
 
   // First establish useQuery
