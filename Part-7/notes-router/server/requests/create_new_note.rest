@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImlpbmFuZGFuIiwiaWQiOiI2NzdkOTA2ZmNkZmI5NGM2MmY2YzNjNWEiLCJpYXQiOjE3MzYyODIyNDQsImV4cCI6MTczNjI4NTg0NH0.XRB3uoLHp-Tlyw7VS64WBXyRbTQrdZt209OGVP__vLo
+
+{
+    "content": "password is watashi858 btw"
+}
