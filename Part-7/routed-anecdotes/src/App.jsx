@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Notification from "./components/Notification";
 import { Link, Routes, Route, useParams, useNavigate } from "react-router-dom";
 
 const Anecdote = ({ anecdotes }) => {
@@ -135,11 +136,23 @@ const App = () => {
     },
   ]);
 
-  const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState(null);
+
+  // When the state of notification changes, clear it after 5 seconds
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [notification]);
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
+    console.log("Anecdote: ", anecdote);
+    console.log(anecdote.content);
+    setNotification(`${anecdote.content} has been added!`);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -161,6 +174,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification notification={notification} />
       <h1>Software anecdotes</h1>
 
       <div>
