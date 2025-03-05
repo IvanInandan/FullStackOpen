@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Routes, Route, useParams } from "react-router-dom";
+import { Link, Routes, Route, useParams, useNavigate } from "react-router-dom";
 
 const Anecdote = ({ anecdotes }) => {
   const id = Number(useParams().id);
@@ -65,6 +65,8 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
+  const navigate = useNavigate();
+
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
@@ -77,6 +79,8 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+
+    navigate("/anecdotes");
   };
 
   return (
