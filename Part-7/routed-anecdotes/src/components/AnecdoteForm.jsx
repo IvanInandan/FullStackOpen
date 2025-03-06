@@ -8,6 +8,11 @@ const CreateNew = ({ addNew }) => {
   const author = useField("text");
   const info = useField("text");
 
+  // Destructures reset function out of object, putting type/value/onChange into a new object (...Props)
+  const { reset: contentReset, ...contentProps } = content;
+  const { reset: authorReset, ...authorProps } = author;
+  const { reset: infoReset, ...infoProps } = info;
+
   const handleCreate = (e) => {
     e.preventDefault();
     addNew({
@@ -33,15 +38,15 @@ const CreateNew = ({ addNew }) => {
       <form>
         <div>
           content
-          <input {...content} />
+          <input {...contentProps} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...authorProps} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...infoProps} />
         </div>
         <button onClick={handleCreate}>create</button>
         <button onClick={handleReset}>reset</button>
