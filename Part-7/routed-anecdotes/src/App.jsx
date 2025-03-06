@@ -1,84 +1,32 @@
-import { useState, useEffect } from "react";
+// Import Components
+import About from "./components/About";
+import Footer from "./components/Footer";
+import Anecdote from "./components/Anecdote";
+import AnecdoteList from "./components/AnecdoteList";
 import Notification from "./components/Notification";
+
+// Import Libraries
+import { useState, useEffect } from "react";
 import { Link, Routes, Route, useParams, useNavigate } from "react-router-dom";
-import { useField } from "./hooks/index";
 
-const Anecdote = ({ anecdotes }) => {
-  const id = Number(useParams().id);
-  const anecdote = anecdotes.find((anecdote) => anecdote.id === id);
+// Import Hooks
+import useField from "./hooks/index";
 
-  console.log(anecdote);
-
-  return (
-    <div>
-      <p>Content: {anecdote.content}</p>
-      <p>Author: {anecdote.author}</p>
-      <p>Info: {anecdote.info}</p>
-      <p>Votes: {anecdote.votes}</p>
-      <p>Id: {anecdote.id}</p>
-    </div>
-  );
-};
-
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-const About = () => (
-  <div>
-    <h2>About anecdote app</h2>
-    <p>According to Wikipedia:</p>
-
-    <em>
-      An anecdote is a brief, revealing account of an individual person or an
-      incident. Occasionally humorous, anecdotes differ from jokes because their
-      primary purpose is not simply to provoke laughter but to reveal a truth
-      more general than the brief tale itself, such as to characterize a person
-      by delineating a specific quirk or trait, to communicate an abstract idea
-      about a person, place, or thing through the concrete details of a short
-      narrative. An anecdote is "a story with a point."
-    </em>
-
-    <p>
-      Software engineering is full of excellent anecdotes, at this app you can
-      find the best and add more.
-    </p>
-  </div>
-);
-
-const Footer = () => (
-  <div>
-    Anecdote app for <a href="https://fullstackopen.com/">Full Stack Open</a>.
-    See{" "}
-    <a href="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js">
-      https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js
-    </a>{" "}
-    for the source code.
-  </div>
-);
+// ----------------------------------------------------------------------------------------------
 
 const CreateNew = (props) => {
   const navigate = useNavigate();
 
   const content = useField("text");
   const author = useField("text");
-  const url = useField("text");
+  const info = useField("text");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
 
@@ -99,7 +47,7 @@ const CreateNew = (props) => {
         </div>
         <div>
           url for more info
-          <input {...url} />
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
