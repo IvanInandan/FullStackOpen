@@ -4,7 +4,7 @@ const Notification = ({ notification }) => {
   } else {
     return (
       <div>
-        <h2>notification</h2>
+        <h2>{notification}</h2>
       </div>
     );
   }

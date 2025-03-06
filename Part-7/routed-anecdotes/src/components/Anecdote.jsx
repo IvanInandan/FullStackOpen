@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 const Anecdote = ({ anecdotes }) => {
   const id = Number(useParams().id);
   const anecdote = anecdotes.find((anecdote) => anecdote.id === id);
