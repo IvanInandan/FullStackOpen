@@ -8,7 +8,7 @@ const CreateNew = ({ addNew }) => {
   const author = useField("text");
   const info = useField("text");
 
-  const handleSubmit = (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
     addNew({
       content: content.value,
@@ -20,10 +20,17 @@ const CreateNew = ({ addNew }) => {
     navigate("/anecdotes");
   };
 
+  const handleReset = (e) => {
+    e.preventDefault();
+    content.reset();
+    author.reset();
+    info.reset();
+  };
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           content
           <input {...content} />
@@ -36,7 +43,8 @@ const CreateNew = ({ addNew }) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <button onClick={handleCreate}>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   );
