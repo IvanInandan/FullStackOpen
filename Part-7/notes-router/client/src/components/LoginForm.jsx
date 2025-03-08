@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Form, Button } from "react-bootstrap";
 
-const LoginForm = ({ handleLogin }) => {
+const LoginForm = ({ handleLogin, setErrorMessage }) => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -16,13 +16,15 @@ const LoginForm = ({ handleLogin }) => {
       password: password,
     });
 
+    if (success === true) {
+      setErrorMessage(`${username} has logged in!`);
+      navigate("/");
+    } else {
+      setErrorMessage(`Login failure: wrong credentials have been entered`);
+    }
+
     setUsername("");
     setPassword("");
-
-    if (success === true) {
-      console.log("Login Successful");
-      navigate("/");
-    }
   };
 
   return (

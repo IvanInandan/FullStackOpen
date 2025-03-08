@@ -46,6 +46,14 @@ const App = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setErrorMessage(null);
+    }, 5000);
+
+    //clearTimeout(timeout);
+  }, [errorMessage]);
+
   const addNote = async (noteObject) => {
     try {
       noteFormRef.current.toggleVisibility();
@@ -110,6 +118,7 @@ const App = (props) => {
     setUser(null);
   };
 
+  /* NO NEED FOR TOGGLABLE COMPONENT ANYMORE
   const loginForm = () => (
     <Togglable buttonLabel="log in">
       <LoginForm handleLogin={handleLogin} />
@@ -121,34 +130,7 @@ const App = (props) => {
       <NoteForm createNote={addNote} />
     </Togglable>
   );
-
-  /*
-  return (
-    <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
-
-      {!user && loginForm()}
-      {user && (
-        <div>
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>Logout</button>
-          {noteForm()}
-        </div>
-      )}
-
-      <Notes notes={notesToShow} toggleImportanceOf={toggleImportanceOf} />
-
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          Show {showAll ? "important" : "all"}
-        </button>
-      </div>
-
-      <Footer />
-    </div>
-  );
-  */
+*/
 
   const padding = {
     padding: 5,
@@ -156,6 +138,7 @@ const App = (props) => {
 
   return (
     <div className="container">
+      <Notification message={errorMessage} />
       <div>
         <Link style={padding} to="/">
           home
@@ -193,9 +176,21 @@ const App = (props) => {
         />
         <Route
           path="/login"
-          element={<LoginForm handleLogin={handleLogin} />}
+          element={
+            <LoginForm
+              handleLogin={handleLogin}
+              setErrorMessage={setErrorMessage}
+            />
+          }
         />
       </Routes>
+
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          Show {showAll ? "important" : "all"}
+        </button>
+      </div>
+
       <Footer />
     </div>
   );
