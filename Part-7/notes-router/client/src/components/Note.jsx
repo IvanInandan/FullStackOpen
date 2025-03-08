@@ -4,10 +4,17 @@ const Note = ({ note, toggleImportance }) => {
   const label = note.important ? "make not important" : "make important";
 
   return (
-    <li className="note">
-      <Link to={`/notes/${note.id}`}>{note.content}</Link>
-      <button onClick={toggleImportance}>{label}</button>
-    </li>
+    <tr className="note">
+      <td>
+        {" "}
+        <Link to={`/notes/${note.id}`}>{note.content}</Link>
+      </td>
+
+      <td>
+        {" "}
+        <button onClick={toggleImportance}>{label}</button>
+      </td>
+    </tr>
   );
 };
 
