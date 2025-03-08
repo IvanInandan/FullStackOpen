@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Table, Form, Button } from "react-bootstrap";
 
 const LoginForm = ({ handleLogin }) => {
   const navigate = useNavigate();
@@ -28,31 +29,33 @@ const LoginForm = ({ handleLogin }) => {
     <div>
       <h2>Login</h2>
 
-      <form onSubmit={attemptLogin}>
-        <div>
-          Username
-          <input
-            data-testid="username"
+      <Form onSubmit={attemptLogin}>
+        <Form.Group>
+          <Form.Label>username: </Form.Label>
+          <Form.Control
             type="text"
+            name="username"
+            data-testid="usrename"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
-        </div>
+        </Form.Group>
 
-        <div>
-          Password
-          <input
-            data-testid="password"
+        <Form.Group>
+          <Form.Label>password: </Form.Label>
+          <Form.Control
             type="password"
+            name="password"
+            data-testid="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
+        </Form.Group>
 
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
+        <Button variant="primary" type="submit">
+          login
+        </Button>
+      </Form>
     </div>
   );
 };
