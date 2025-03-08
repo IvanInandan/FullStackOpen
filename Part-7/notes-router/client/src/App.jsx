@@ -16,6 +16,7 @@ import loginService from "./services/login";
 // Libraries
 import { useState, useEffect, useRef } from "react";
 import { Link, Routes, Route, Navigate } from "react-router-dom";
+import { Nav, Navbar, Button } from "react-bootstrap";
 
 const App = (props) => {
   const [notes, setNotes] = useState([]);
@@ -139,27 +140,44 @@ const App = (props) => {
   return (
     <div className="container">
       <Notification message={errorMessage} />
-      <div>
-        <Link style={padding} to="/">
-          home
-        </Link>
-        <Link style={padding} to="/notes">
-          notes
-        </Link>
-        <Link style={padding} to="/users">
-          users
-        </Link>
-        {user ? (
-          <div>
-            <em>{user.name} logged in</em>
-            <button onClick={() => handleLogout()}>logout</button>
-          </div>
-        ) : (
-          <Link style={padding} to="/login">
-            login
-          </Link>
-        )}
-      </div>
+
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/" style={padding}>
+              home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/notes" style={padding}>
+              notes
+            </Nav.Link>
+            <Nav.Link as={Link} to="/users" style={padding}>
+              users
+            </Nav.Link>
+          </Nav>
+
+          <Nav>
+            {user ? (
+              <Nav.Item>
+                <span style={{ color: "white", marginRight: "10px" }}>
+                  {user.name} logged in
+                </span>
+                <Button
+                  variant="outline-light"
+                  size="sm"
+                  onClick={handleLogout}
+                >
+                  logout
+                </Button>
+              </Nav.Item>
+            ) : (
+              <Nav.Link as={Link} to="/login" style={padding}>
+                login
+              </Nav.Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
 
       <Routes>
         <Route path="/" element={<Home />} />
