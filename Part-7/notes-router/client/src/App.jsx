@@ -137,6 +137,8 @@ const App = (props) => {
     padding: 5,
   };
 
+  // Link (Nav.Link) defines in 'to' what the URL will change to when clicked
+  // Route defines what component is displayed under that URL
   return (
     <div className="container">
       <Notification message={errorMessage} />
