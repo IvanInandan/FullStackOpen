@@ -17,6 +17,7 @@ import loginService from "./services/login";
 import { useState, useEffect, useRef } from "react";
 import { Link, Routes, Route, Navigate } from "react-router-dom";
 import { Nav, Navbar, Button } from "react-bootstrap";
+import { Container } from "@mui/material";
 
 const App = (props) => {
   const [notes, setNotes] = useState([]);
@@ -139,6 +140,7 @@ const App = (props) => {
 
   // Link (Nav.Link) defines in 'to' what the URL will change to when clicked
   // Route defines what component is displayed under that URL
+  /*
   return (
     <div className="container">
       <Notification message={errorMessage} />
@@ -214,6 +216,13 @@ const App = (props) => {
       <Footer />
     </div>
   );
+  */
+
+  return (
+    <Container>
+      
+    </Container>
+  )
 };
 
 export default App;

@@ -7,6 +7,7 @@ const NoteId = ({ notes }) => {
   const match = notes.filter((note) => note.id === id)[0];
   console.log(match);
 
+  // For Bootstrap UI:
   return (
     <Table>
       <tbody>

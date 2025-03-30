@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Container } from "@mui/material";
 
 const useField = (type) => {
   const [value, setValue] = useState("");
@@ -56,6 +57,7 @@ const App = () => {
   console.log(notes);
   console.log(noteService);
 
+  //For Bootstrap UI:
   return (
     <div>
       <h2>notes</h2>
@@ -80,6 +82,16 @@ const App = () => {
       ))}
     </div>
   );
+
+  /*
+  return (
+    <Container>
+      <h2>Notes</h2>
+
+      <TableContainer></TableContainer>
+    </Container>
+  );
+  */
 };
 
 export default App;
