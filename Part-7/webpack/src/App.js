@@ -17,8 +17,10 @@ const useNotes = (url) => {
 const App = () => {
   const [counter, setCounter] = useState(0);
   const [values, setValues] = useState([]);
-  const url = "https://localhost:3001/notes";
+  const url = "http://localhost:3001/notes";
   const notes = useNotes(url);
+
+  console.log(notes);
 
   const handleClick = () => {
     setCounter(counter + 1);
