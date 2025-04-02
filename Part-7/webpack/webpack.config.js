@@ -11,6 +11,7 @@ const config = {
     compress: true,
     port: 3000,
   },
+  devtool: "source-map", // Logs error message on correct line as it derives from the code we wrote rather than the built code
   module: {
     rules: [
       {
